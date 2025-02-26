@@ -117,7 +117,50 @@ def test_none_value():
     assert s.member(None) is True
     s.remove(None)
     assert s.member(None) is False
+# -----------------------
+# 6️⃣ 测试哈希集合的扩容逻辑
+# -----------------------
+def test_resize():
+    # 测试1：触发扩容时的容量变化
+    s = OpenAddressingSet(initial_capacity=4, growth_factor=2)
+    assert s.capacity == 4
+    s.add(1)
+    s.add(2)
+    s.add(3)
+    assert s.capacity == 8
+    assert sorted(s.to_list()) == [1, 2, 3]
 
+    # 测试2：扩容后元素正确性
+    s.add(4)
+    s.add(5)
+    assert s.capacity == 8
+    s.add(6)
+    assert s.capacity == 16
+    expected = [1, 2, 3, 4, 5, 6]
+    assert sorted(s.to_list()) == expected
+
+    # 测试3：删除元素后扩容，确保已删除元素不迁移
+    s.remove(3)
+    s.remove(5)
+    s.add(7)
+    s.add(8)
+    s.add(9)
+    s.add(10)
+    s.add(11)
+    s.add(12)
+    s.add(13)
+    s.add(14)
+    assert s.capacity == 32
+    expected_after_remove = [1, 2, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+    assert sorted(s.to_list()) == expected_after_remove
+
+    # 测试4：初始容量为1的特殊情况
+    s = OpenAddressingSet(initial_capacity=1, growth_factor=2)
+    s.add(0)
+    assert s.capacity == 2
+    s.add(1)
+    assert s.capacity == 4
+    assert sorted(s.to_list()) == [0, 1]
 # -----------------------
 # 6️⃣ 随机测试（Hypothesis）
 # -----------------------
