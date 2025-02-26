@@ -1,9 +1,8 @@
 from hypothesis import given, strategies as st
-# 确保你的类存放在 `open_addressing_set.py`
 from open_addressing_set import OpenAddressingSet
 
 # -----------------------
-# 1️⃣ 基础功能测试
+# Basic Functionality Tests
 # -----------------------
 
 
@@ -13,7 +12,7 @@ def test_add():
     s.add(20)
     assert s.member(10) is True
     assert s.member(20) is True
-    assert s.member(30) is False  # 不存在的元素
+    assert s.member(30) is False  # Non-existent element
 
 
 def test_remove():
@@ -51,7 +50,7 @@ def test_from_list():
     assert s.member(4) is False
 
 # -----------------------
-# 2️⃣ 迭代器测试
+# Iterator Tests
 # -----------------------
 
 
@@ -62,7 +61,7 @@ def test_iterator():
     assert sorted(result) == [1, 2, 3]
 
 # -----------------------
-# 3️⃣ 过滤 & 映射 & 归约
+# Filter, Map, and Reduce
 # -----------------------
 
 
@@ -87,7 +86,7 @@ def test_reduce():
     assert total == 10  # 1+2+3+4 = 10
 
 # -----------------------
-# 4️⃣ Monoid（empty & concat）
+# Monoid (empty & concat)
 # -----------------------
 
 
@@ -107,7 +106,7 @@ def test_concat():
     assert sorted(s3.to_list()) == [1, 2, 3, 4, 5]
 
 # -----------------------
-# 5️⃣ `None` 值的处理
+# Handling `None` Values
 # -----------------------
 
 
@@ -117,11 +116,14 @@ def test_none_value():
     assert s.member(None) is True
     s.remove(None)
     assert s.member(None) is False
+
 # -----------------------
-# 6️⃣ 测试哈希集合的扩容逻辑
+# Testing Hash Set Resizing Logic
 # -----------------------
+
+
 def test_resize():
-    # 测试1：触发扩容时的容量变化
+    # Test 1: Capacity change when resizing is triggered
     s = OpenAddressingSet(initial_capacity=4, growth_factor=2)
     assert s.capacity == 4
     s.add(1)
@@ -130,7 +132,7 @@ def test_resize():
     assert s.capacity == 8
     assert sorted(s.to_list()) == [1, 2, 3]
 
-    # 测试2：扩容后元素正确性
+    # Test 2: Correctness of elements after resizing
     s.add(4)
     s.add(5)
     assert s.capacity == 8
@@ -139,7 +141,7 @@ def test_resize():
     expected = [1, 2, 3, 4, 5, 6]
     assert sorted(s.to_list()) == expected
 
-    # 测试3：删除元素后扩容，确保已删除元素不迁移
+    # Test 3: Resizing after deleting elements, ensuring deleted elements are not migrated
     s.remove(3)
     s.remove(5)
     s.add(7)
@@ -154,15 +156,16 @@ def test_resize():
     expected_after_remove = [1, 2, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14]
     assert sorted(s.to_list()) == expected_after_remove
 
-    # 测试4：初始容量为1的特殊情况
+    # Test 4: Special case with initial capacity of 1
     s = OpenAddressingSet(initial_capacity=1, growth_factor=2)
     s.add(0)
     assert s.capacity == 2
     s.add(1)
     assert s.capacity == 4
     assert sorted(s.to_list()) == [0, 1]
+
 # -----------------------
-# 6️⃣ 随机测试（Hypothesis）
+# Randomized Testing (Hypothesis)
 # -----------------------
 
 
@@ -170,11 +173,11 @@ def test_resize():
 def test_from_list_to_list_equality(lst):
     s = OpenAddressingSet()
     s.from_list(lst)
-    assert sorted(s.to_list()) == sorted(set(lst))  # 去重
+    assert sorted(s.to_list()) == sorted(set(lst))
 
 
 @given(st.lists(st.integers()))
 def test_python_len_and_set_size_equality(lst):
     s = OpenAddressingSet()
     s.from_list(lst)
-    assert s.size == len(set(lst))  # `set()` 自动去重
+    assert s.size == len(set(lst))
