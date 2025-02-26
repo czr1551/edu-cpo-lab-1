@@ -141,7 +141,8 @@ def test_resize():
     expected = [1, 2, 3, 4, 5, 6]
     assert sorted(s.to_list()) == expected
 
-    # Test 3: Resizing after deleting elements, ensuring deleted elements are not migrated
+    # Test 3: Resizing after deleting elements, ensuring deleted elements are
+    # not migrated
     s.remove(3)
     s.remove(5)
     s.add(7)
