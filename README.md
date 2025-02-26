@@ -2,8 +2,8 @@
 
 This project implements a Set based on Hash Map (Open Addressing) and  
 demonstrates mutable data structure implementation. It follows proper  
-project structure and CI checks. While not optimized for production, it  
-serves as an educational example.
+project structure and CI checks. While not optimized for production,  
+it serves as an educational example.
 
 ## Project structure
 
@@ -46,8 +46,6 @@ serves as an educational example.
 
 ## Changelog
 
-- **26.02.2025 - 3**
-  - Modify the format to make Actions run.
 - **12.02.2025 - 2**
   - Refactored `_probe()` to correctly handle empty slots.
 - **11.02.2025 - 1**
@@ -64,4 +62,5 @@ serves as an educational example.
 - Designed unit tests and PBT to validate properties of `OpenAddressingSet`.
 - Followed PEP8 and CI best practices with `pytest`, `ruff`, `mypy`,  
   and `coverage`.
+
 
