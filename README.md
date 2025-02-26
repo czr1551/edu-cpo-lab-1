@@ -51,6 +51,11 @@ it serves as an educational example.
 
 ## Changelog
 
+- **26.02.2025 - 3**
+- Modify the format to make Actions run.
+- Reconfirm the integrity of the project content.
+- Change comment language.
+  
 - **12.02.2025 - 2**
 - Refactored `_probe()` to correctly handle empty slots.
 
