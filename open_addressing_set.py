@@ -36,7 +36,7 @@ class OpenAddressingSet:
 
         :param key: The element to add
         """
-        if self.size / self.capacity >= 0.7:
+        if (self.size + 1) / self.capacity > 0.7:
             self._resize()
 
         index = self._probe(key)
