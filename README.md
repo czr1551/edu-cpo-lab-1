@@ -55,7 +55,7 @@ it serves as an educational example.
 - Modify the format to make Actions run.
 - Reconfirm the integrity of the project content.
 - Change comment language.
-  
+
 - **12.02.2025 - 2**
 - Refactored `_probe()` to correctly handle empty slots.
 
