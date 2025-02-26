@@ -168,4 +168,3 @@ class OpenAddressingSet:
             if key is not self.EMPTY:
                 new_set.add(key)
         return new_set
-
