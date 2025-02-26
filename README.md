@@ -31,8 +31,8 @@ This project implements a Set based on Hash Map (Open Addressing) and demonstrat
 
 ## Contribution
 
-- czr61551@gmail.com -- Implementation of OpenAddressingSet, documentation.
-- quinn_wang0416@163.com -- Implementation of test cases.
+- <czr61551@gmail.com> -- Implementation of OpenAddressingSet, documentation.
+- <quinn_wang0416@163.com> -- Implementation of test cases.
 
 ## Changelog
 
@@ -51,7 +51,3 @@ This project implements a Set based on Hash Map (Open Addressing) and demonstrat
 - Ensured logarithmic growth factor to maintain efficient resizing.
 - Designed unit tests and PBT to validate properties of OpenAddressingSet.
 - Followed PEP8 and CI best practices with pytest, ruff, mypy, and coverage.
-
-
-
-
