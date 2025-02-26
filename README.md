@@ -31,8 +31,8 @@ This project implements a Set based on Hash Map (Open Addressing) and demonstrat
 
 ## Contribution
 
-- czr61551@gmail.com (EMAIL) -- Implementation of OpenAddressingSet, documentation.
-- quinn_wang0416@163.com (EMAIL) -- Implementation of test cases.
+- czr61551@gmail.com -- Implementation of OpenAddressingSet, documentation.
+- quinn_wang0416@163.com -- Implementation of test cases.
 
 ## Changelog
 
