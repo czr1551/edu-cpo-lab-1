@@ -1,16 +1,20 @@
 class OpenAddressingSet:
     """
-    A hash set implementation using open addressing with linear probing for collision resolution.
+    A hash set implementation using open addressing with
+    linear probing for collision resolution.
     """
 
-    EMPTY = object()  # Special marker to distinguish between `None` and empty slots
+    EMPTY = object()
+    # Special marker to distinguish between `None` and empty slots
 
     def __init__(self, initial_capacity=8, growth_factor=2):
         """
         Initialize the hash set.
 
-        :param initial_capacity: Initial size of the hash table (must be a power of 2)
-        :param growth_factor: Growth factor for table expansion when load factor is too high
+        :param initial_capacity:
+        Initial size of the hash table (must be a power of 2)
+        :param growth_factor:
+        Growth factor for table expansion when load factor is too high
         """
         self.capacity = initial_capacity
         self.size = 0
@@ -23,10 +27,12 @@ class OpenAddressingSet:
 
     def _probe(self, key):
         """
-        Linear probing: Find the index of the key in the hash table or the first empty slot for insertion.
+        Linear probing: Find the index of the key in the hash table
+        or the first empty slot for insertion.
         """
         index = self._hash(key)
-        while self.buckets[index] is not self.EMPTY and self.buckets[index] != key:
+        while (self.buckets[index] is not self.EMPTY
+               and self.buckets[index] != key):
             index = (index + 1) % self.capacity
         return index
 
