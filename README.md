@@ -33,7 +33,6 @@ it serves as an educational example.
   - `reduce(func, initial_state)`: Aggregate values using a given function.
 
 - **PBT:**
-
   - `test_from_list_to_list_equality`
   - `test_python_len_and_set_size_equality`
   - `test_add_commutative`
@@ -53,15 +52,12 @@ it serves as an educational example.
 ## Changelog
 
 - **12.02.2025 - 2**
-  
   - Refactored `_probe()` to correctly handle empty slots.
 
 - **11.02.2025 - 1**
-  
   - Improved test coverage.
 
 - **10.02.2025 - 0**
-  
   - Initial implementation of `OpenAddressingSet`.
   - Basic tests for `add()`, `remove()`, and `member()`.
 
