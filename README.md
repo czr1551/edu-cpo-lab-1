@@ -62,5 +62,3 @@ it serves as an educational example.
 - Designed unit tests and PBT to validate properties of `OpenAddressingSet`.
 - Followed PEP8 and CI best practices with `pytest`, `ruff`, `mypy`,  
   and `coverage`.
-
-
