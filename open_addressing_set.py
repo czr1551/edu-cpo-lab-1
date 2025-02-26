@@ -27,7 +27,8 @@ class OpenAddressingSet:
         线性探测：在哈希表中查找 key 的索引，或者找到第一个空位用于插入。
         """
         index = self._hash(key)
-        while self.buckets[index] is not self.EMPTY and self.buckets[index] != key:
+        while (self.buckets[index] is not self.EMPTY
+               and self.buckets[index] != key):
             index = (index + 1) % self.capacity  # 线性探测（向后找空位）
         return index
 
