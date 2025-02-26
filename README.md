@@ -1,32 +1,57 @@
-# GROUP-NAME - lab NUMBER - variant NUMBER
+# GROUP-NO DAY OFF - lab 1 - variant "Set based on hash map, open addressing"
 
-This is an example project which demonstrates project structure and necessary
-CI checks. It is not the best structure for real-world projects, but good
-enough for educational purposes.
+This project implements a Set based on Hash Map (Open Addressing) and demonstrates mutable data structure implementation. It follows proper project structure and CI checks. While not optimized for production, it serves as an educational example.
 
 ## Project structure
 
-- `foo.py` -- implementation of `Foo` class with `hello` and `add` features.
-   Stateless.
-- `foo_test.py` -- unit and PBT tests for `Foo`.
+- open_addressing_set.py — Implementation of OpenAddressingSet class with add, remove, member, filter, map, reduce, and other features.
+- test_open_addressing_set.py — Unit tests and Property-Based Tests (PBT) for OpenAddressingSet.
 
 ## Features
 
-- PBT: `test_add_commutative`
+- Core functionality:
+  - add(key): Add an element.
+  - remove(key): Remove an element.
+  - member(key): Check if an element exists.
+  - size(): Get the number of elements.
+  - from_list(lst): Create a set from a Python list.
+  - to_list(): Convert the set to a Python list.
+  - concat(set): Merge two sets.
+- Functional operations:
+  - filter(predicate): Return a new set with elements that satisfy the predicate.
+  - map(func): Apply a function to all elements and return a new set.
+  - reduce(func, initial_state): Aggregate values using a given function.
+- PBT:
+  - test_from_list_to_list_equality
+  - test_python_len_and_set_size_equality
+  - test_add_commutative
+- Monoid properties:
+  - empty(): Create an empty set.
+  - concat(set): Combine two sets.
 
 ## Contribution
 
-- Aleksandr Penskoi (EMAIL) -- all work.
+- czr61551@gmail.com (EMAIL) -- Implementation of OpenAddressingSet, documentation.
+- quinn_wang0416@163.com (EMAIL) -- Implementation of test cases.
 
 ## Changelog
 
-- 29.03.2022 - 2
-  - Add test coverage.
-- 29.03.2022 - 1
-  - Update README. Add formal sections.
-- 29.03.2022 - 0
-  - Initial
+- 12.02.2025 - 2
+  - Refactored _probe() to correctly handle empty slots.
+- 11.02.2025 - 1
+  - Improved test coverage
+- 10.02.2025 - 0
+  - Initial implementation of OpenAddressingSet.
+  - Basic tests for add(), remove(), and member().
 
 ## Design notes
 
-- ...
+- Used open addressing with linear probing for collision resolution.
+- Used a special marker EMPTY to distinguish deleted elements from None.
+- Ensured logarithmic growth factor to maintain efficient resizing.
+- Designed unit tests and PBT to validate properties of OpenAddressingSet.
+- Followed PEP8 and CI best practices with pytest, ruff, mypy, and coverage.
+
+
+
+
