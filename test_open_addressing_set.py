@@ -4,7 +4,7 @@ from open_addressing_set import OpenAddressingSet
 
 # -----------------------
 # Basic Functionality Tests
-# -----------------------
+# ----------------------
 
 def test_add():
     s = OpenAddressingSet()
