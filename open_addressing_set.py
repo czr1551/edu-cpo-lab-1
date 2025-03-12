@@ -160,16 +160,7 @@ class OpenAddressingSet:
         return OpenAddressingSet()
 
     def concat(self, other_set):
-        """
-        Concatenate two sets, returning a new set.
-
-        :param other_set: The other set to concatenate
-        """
-        new_set = OpenAddressingSet()
-        for key in self.buckets:
-            if key is not self.EMPTY:
-                new_set.add(key)
         for key in other_set.buckets:
             if key is not self.EMPTY:
-                new_set.add(key)
-        return new_set
+                self.add(key)
+        return self  # 可选，返回 self 支持链式调用
