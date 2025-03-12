@@ -2,8 +2,7 @@
 
 This project implements a Set based on Hash Map (Open Addressing) and  
 demonstrates mutable data structure implementation. It follows proper  
-project structure and CI checks. While not optimized for production,  
-it serves as an educational example.
+project structure and CI checks. 
 
 ## Project structure
 
