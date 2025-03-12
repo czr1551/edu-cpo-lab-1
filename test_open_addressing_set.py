@@ -1,10 +1,10 @@
 from hypothesis import given, strategies as st
 from open_addressing_set import OpenAddressingSet
 
+
 # -----------------------
 # Basic Functionality Tests
 # -----------------------
-
 
 def test_add():
     s = OpenAddressingSet()
@@ -49,10 +49,10 @@ def test_from_list():
     assert s.member(3) is True
     assert s.member(4) is False
 
+
 # -----------------------
 # Iterator Tests
 # -----------------------
-
 
 def test_iterator():
     s = OpenAddressingSet()
@@ -60,10 +60,10 @@ def test_iterator():
     result = list(iter(s))
     assert sorted(result) == [1, 2, 3]
 
+
 # -----------------------
 # Filter, Map, and Reduce
 # -----------------------
-
 
 def test_filter():
     s = OpenAddressingSet()
@@ -85,10 +85,10 @@ def test_reduce():
     total = s.reduce(lambda acc, x: acc + x, 0)
     assert total == 10  # 1+2+3+4 = 10
 
-# -----------------------
-# Monoid (empty & concat)
-# -----------------------
 
+# -----------------------
+# Monoid (empty & concat) Tests
+# -----------------------
 
 def test_empty():
     s = OpenAddressingSet.empty()
@@ -96,19 +96,67 @@ def test_empty():
 
 
 def test_concat():
+    # 因为 concat 已经改为可变版本，直接修改 s1
     s1 = OpenAddressingSet()
     s1.from_list([1, 2, 3])
-
     s2 = OpenAddressingSet()
     s2.from_list([4, 5])
+    s1.concat(s2)
+    assert sorted(s1.to_list()) == [1, 2, 3, 4, 5]
 
-    s3 = s1.concat(s2)
-    assert sorted(s3.to_list()) == [1, 2, 3, 4, 5]
+
+# -----------------------
+# Property-Based Tests for Monoid Properties
+# -----------------------
+
+def create_set(lst):
+    s = OpenAddressingSet()
+    s.from_list(lst)
+    return s
+
+
+# test : a.concat(empty()) == a & empty().concat(a) == a
+@given(st.lists(st.integers()))
+def test_identity_property(lst):
+    #  a.concat(empty()) == a
+    a = create_set(lst)
+    a_copy = create_set(lst)
+    a.concat(OpenAddressingSet.empty())
+    assert sorted(a.to_list()) == sorted(a_copy.to_list())
+
+    # empty().concat(a) == a
+    a2 = create_set(lst)
+    empty_set = OpenAddressingSet.empty()
+    empty_set.concat(a2)
+    assert sorted(empty_set.to_list()) == sorted(a2.to_list())
+
+
+# test： (a.concat(b)).concat(c) == a.concat(b.concat(c))
+@given(st.lists(st.integers()), st.lists(st.integers()),
+       st.lists(st.integers()))
+def test_associativity_property(lst_a, lst_b, lst_c):
+    #  1:  a.concat(b) -> concat(c)
+    a1 = create_set(lst_a)
+    b1 = create_set(lst_b)
+    c1 = create_set(lst_c)
+    a1.concat(b1)
+    a1.concat(c1)
+    left = sorted(a1.to_list())
+
+    #2:  b.concat(c) -> a.concat(b)
+    a2 = create_set(lst_a)
+    b2 = create_set(lst_b)
+    c2 = create_set(lst_c)
+    b2.concat(c2)
+    a2.concat(b2)
+    right = sorted(a2.to_list())
+
+    assert left == right
+
 
 # -----------------------
 # Handling `None` Values
 # -----------------------
-
 
 def test_none_value():
     s = OpenAddressingSet()
@@ -117,10 +165,10 @@ def test_none_value():
     s.remove(None)
     assert s.member(None) is False
 
+
 # -----------------------
 # Testing Hash Set Resizing Logic
 # -----------------------
-
 
 def test_resize():
     # Test 1: Capacity change when resizing is triggered
@@ -141,8 +189,7 @@ def test_resize():
     expected = [1, 2, 3, 4, 5, 6]
     assert sorted(s.to_list()) == expected
 
-    # Test 3: Resizing after deleting elements, ensuring deleted elements are
-    # not migrated
+    # Test 3: Resizing after deleting elements, ensuring deleted elements are not migrated
     s.remove(3)
     s.remove(5)
     s.add(7)
@@ -165,10 +212,10 @@ def test_resize():
     assert s.capacity == 4
     assert sorted(s.to_list()) == [0, 1]
 
+
 # -----------------------
 # Randomized Testing (Hypothesis)
 # -----------------------
-
 
 @given(st.lists(st.integers()))
 def test_from_list_to_list_equality(lst):
@@ -182,3 +229,4 @@ def test_python_len_and_set_size_equality(lst):
     s = OpenAddressingSet()
     s.from_list(lst)
     assert s.size == len(set(lst))
+
