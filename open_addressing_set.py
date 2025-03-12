@@ -7,7 +7,7 @@ class OpenAddressingSet:
     EMPTY = object()
     # Special marker to distinguish between `None` and empty slots
 
-    def __init__(self: 'OpenAddressingSet', initial_capacity: int = 8, growth_factor: int = 2) -> None:
+    def __init__(self, initial_capacity=8, growth_factor=2):
         """
         Initialize the hash set.
 
@@ -21,11 +21,11 @@ class OpenAddressingSet:
         self.growth_factor = growth_factor
         self.buckets = [self.EMPTY] * self.capacity
 
-    def _hash(self: 'OpenAddressingSet', key: int) -> int:
+    def _hash(self, key):
         """Compute the hash value and map it to a table index."""
         return hash(key) % self.capacity
 
-    def _probe(self: 'OpenAddressingSet', key: int) -> int:
+    def _probe(self, key):
         """
         Linear probing: Find the index of the key in the hash table
         or the first empty slot for insertion.
@@ -36,7 +36,7 @@ class OpenAddressingSet:
             index = (index + 1) % self.capacity
         return index
 
-    def add(self: 'OpenAddressingSet', key: int) -> None:
+    def add(self, key):
         """
         Add an element to the set.
 
@@ -50,7 +50,7 @@ class OpenAddressingSet:
             self.buckets[index] = key
             self.size += 1
 
-    def filter(self: 'OpenAddressingSet', predicate: Callable[[int], bool]) -> 'OpenAddressingSet':
+    def filter(self, predicate):
         """
         Filter elements in the set, retaining those that satisfy the predicate.
 
@@ -63,7 +63,7 @@ class OpenAddressingSet:
                 new_set.add(key)
         return new_set
 
-    def map(self: 'OpenAddressingSet', func: Callable[[int], int]) -> 'OpenAddressingSet':
+    def map(self, func):
         """
         Map elements in the set, returning a new set.
 
@@ -90,7 +90,7 @@ class OpenAddressingSet:
                 state = func(state, key)
         return state
 
-    def remove(self: 'OpenAddressingSet', key: int) -> None:
+    def remove(self, key):
         """
         Remove an element from the set.
 
@@ -104,7 +104,7 @@ class OpenAddressingSet:
                 return
             index = (index + 1) % self.capacity
 
-    def member(self: 'OpenAddressingSet', key: int) -> bool:
+    def member(self, key):
         """
         Check if an element exists in the set.
 
@@ -118,7 +118,7 @@ class OpenAddressingSet:
             index = (index + 1) % self.capacity
         return False
 
-    def _resize(self: 'OpenAddressingSet') -> None:
+    def _resize(self):
         """
         Expand the hash table according to the growth factor.
         """
@@ -131,21 +131,21 @@ class OpenAddressingSet:
             if key is not self.EMPTY:
                 self.add(key)
 
-    def to_list(self: 'OpenAddressingSet') -> List[int]:
+    def to_list(self):
         """Convert the set to a Python list."""
         return [key for key in self.buckets if key is not self.EMPTY]
 
-    def from_list(self: 'OpenAddressingSet', lst: List[int]) -> None:
+    def from_list(self, lst):
         """Create a set from a list."""
         for key in lst:
             self.add(key)
 
-    def __iter__(self: 'OpenAddressingSet') -> Iterator[int]:
+    def __iter__(self):
         """Implement the iterator interface."""
         self.iter_index = 0
         return self
 
-    def __next__(self: 'OpenAddressingSet') -> int:
+    def __next__(self):
         """Support the `next()` method."""
         while self.iter_index < self.capacity:
             key = self.buckets[self.iter_index]
@@ -155,11 +155,11 @@ class OpenAddressingSet:
         raise StopIteration
 
     @staticmethod
-    def empty() -> 'OpenAddressingSet':
+    def empty():
         """Return an empty set."""
         return OpenAddressingSet()
 
-    def concat(self: 'OpenAddressingSet', other_set: 'OpenAddressingSet') -> 'OpenAddressingSet':
+    def concat(self, other_set):
         """
         Concatenate two sets, returning a new set.
 
