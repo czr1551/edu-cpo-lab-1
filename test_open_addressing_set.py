@@ -143,7 +143,7 @@ def test_associativity_property(lst_a, lst_b, lst_c):
     a1.concat(c1)
     left = sorted(a1.to_list())
 
-    #2:  b.concat(c) -> a.concat(b)
+    #  2:  b.concat(c) -> a.concat(b)
     a2 = create_set(lst_a)
     b2 = create_set(lst_b)
     c2 = create_set(lst_c)
@@ -189,7 +189,8 @@ def test_resize():
     expected = [1, 2, 3, 4, 5, 6]
     assert sorted(s.to_list()) == expected
 
-    # Test 3: Resizing after deleting elements, ensuring deleted elements are not migrated
+    # Test 3: Resizing after deleting elements
+    # ensuring deleted elements are not migrated
     s.remove(3)
     s.remove(5)
     s.add(7)
@@ -229,4 +230,3 @@ def test_python_len_and_set_size_equality(lst):
     s = OpenAddressingSet()
     s.from_list(lst)
     assert s.size == len(set(lst))
-
