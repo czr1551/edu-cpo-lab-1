@@ -1,3 +1,5 @@
+from typing import Any, Callable, List, Optional, Iterator
+
 class OpenAddressingSet:
     """
     A hash set implementation using open addressing with
@@ -50,7 +52,7 @@ class OpenAddressingSet:
             self.buckets[index] = key
             self.size += 1
 
-    def filter(self: 'OpenAddressingSet', predicate) -> 'OpenAddressingSet':
+    def filter(self: 'OpenAddressingSet', predicate: Callable[[int], bool]) -> 'OpenAddressingSet':
         """
         Filter elements in the set, retaining those that satisfy the predicate.
 
@@ -63,7 +65,7 @@ class OpenAddressingSet:
                 new_set.add(key)
         return new_set
 
-    def map(self: 'OpenAddressingSet', func) -> 'OpenAddressingSet':
+    def map(self: 'OpenAddressingSet', func: Callable[[int], int]) -> 'OpenAddressingSet':
         """
         Map elements in the set, returning a new set.
 
@@ -76,7 +78,7 @@ class OpenAddressingSet:
                 new_set.add(func(key))
         return new_set
 
-    def reduce(self: 'OpenAddressingSet', func, initial_state: Any) -> Any:
+    def reduce(self: 'OpenAddressingSet', func: Callable[[Any, int], Any], initial_state: Any) -> Any:
         """
         Reduce elements in the set to a single value.
 
