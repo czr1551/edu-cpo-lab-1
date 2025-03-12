@@ -7,7 +7,7 @@ class OpenAddressingSet:
     EMPTY = object()
     # Special marker to distinguish between `None` and empty slots
 
-     def __init__(self: 'OpenAddressingSet', initial_capacity: int = 8, growth_factor: int = 2) -> None:
+    def __init__(self: 'OpenAddressingSet', initial_capacity: int = 8, growth_factor: int = 2) -> None:
         """
         Initialize the hash set.
 
@@ -25,7 +25,7 @@ class OpenAddressingSet:
         """Compute the hash value and map it to a table index."""
         return hash(key) % self.capacity
 
-     def _probe(self: 'OpenAddressingSet', key: int) -> int:
+    def _probe(self: 'OpenAddressingSet', key: int) -> int:
         """
         Linear probing: Find the index of the key in the hash table
         or the first empty slot for insertion.
