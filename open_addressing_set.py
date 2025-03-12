@@ -54,8 +54,8 @@ class OpenAddressingSet:
             self.buckets[index] = key
             self.size += 1
 
-    def filter(self: 'OpenAddressingSet', predicate: Callable[[int], bool]) 
-    -> 'OpenAddressingSet':
+    def filter(self: 'OpenAddressingSet', predicate: Callable[[int], bool]) -
+    > 'OpenAddressingSet':
         """
         Filter elements in the set, retaining those that satisfy the predicate.
 
@@ -68,8 +68,8 @@ class OpenAddressingSet:
                 new_set.add(key)
         return new_set
 
-    def map(self: 'OpenAddressingSet', func: Callable[[int], int]) 
-    -> 'OpenAddressingSet':
+    def map(self: 'OpenAddressingSet', func: Callable[[int], int]) -
+    > 'OpenAddressingSet':
         """
         Map elements in the set, returning a new set.
 
@@ -166,8 +166,8 @@ class OpenAddressingSet:
         """Return an empty set."""
         return OpenAddressingSet()
 
-    def concat(self: 'OpenAddressingSet', other_set: 'OpenAddressingSet') 
-    -> 'OpenAddressingSet':
+    def concat(self: 'OpenAddressingSet', other_set: 'OpenAddressingSet') -
+    > 'OpenAddressingSet':
         for key in other_set.buckets:
             if key is not self.EMPTY:
                 self.add(key)
