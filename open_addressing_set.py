@@ -11,7 +11,7 @@ class OpenAddressingSet:
     # Special marker to distinguish between `None` and empty slots
 
     def __init__(self: 'OpenAddressingSet', initial_capacity: int = 8, 
-     growth_factor: int = 2) -> None:
+growth_factor: int = 2) -> None:
         """
         Initialize the hash set.
 
