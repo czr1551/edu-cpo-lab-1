@@ -1,4 +1,4 @@
-from typing import Any, Callable, List, Optional, Iterator
+from typing import Any, Callable, List, Iterator
 
 
 class OpenAddressingSet:
