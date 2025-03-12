@@ -1,5 +1,6 @@
 from typing import Any, Callable, List, Optional, Iterator
 
+
 class OpenAddressingSet:
     """
     A hash set implementation using open addressing with
@@ -9,7 +10,8 @@ class OpenAddressingSet:
     EMPTY = object()
     # Special marker to distinguish between `None` and empty slots
 
-    def __init__(self: 'OpenAddressingSet', initial_capacity: int = 8, growth_factor: int = 2) -> None:
+    def __init__(self: 'OpenAddressingSet', initial_capacity: int = 8, 
+    growth_factor: int = 2) -> None:
         """
         Initialize the hash set.
 
@@ -52,7 +54,8 @@ class OpenAddressingSet:
             self.buckets[index] = key
             self.size += 1
 
-    def filter(self: 'OpenAddressingSet', predicate: Callable[[int], bool]) -> 'OpenAddressingSet':
+    def filter(self: 'OpenAddressingSet', predicate: Callable[[int], bool]) 
+    -> 'OpenAddressingSet':
         """
         Filter elements in the set, retaining those that satisfy the predicate.
 
@@ -65,7 +68,8 @@ class OpenAddressingSet:
                 new_set.add(key)
         return new_set
 
-    def map(self: 'OpenAddressingSet', func: Callable[[int], int]) -> 'OpenAddressingSet':
+    def map(self: 'OpenAddressingSet', func: Callable[[int], int]) 
+    -> 'OpenAddressingSet':
         """
         Map elements in the set, returning a new set.
 
@@ -78,7 +82,8 @@ class OpenAddressingSet:
                 new_set.add(func(key))
         return new_set
 
-    def reduce(self: 'OpenAddressingSet', func: Callable[[Any, int], Any], initial_state: Any) -> Any:
+    def reduce(self: 'OpenAddressingSet', func: Callable[[Any, int], Any], 
+    initial_state: Any) -> Any:
         """
         Reduce elements in the set to a single value.
 
@@ -161,7 +166,8 @@ class OpenAddressingSet:
         """Return an empty set."""
         return OpenAddressingSet()
 
-    def concat(self: 'OpenAddressingSet', other_set: 'OpenAddressingSet') -> 'OpenAddressingSet':
+    def concat(self: 'OpenAddressingSet', other_set: 'OpenAddressingSet') 
+    -> 'OpenAddressingSet':
         for key in other_set.buckets:
             if key is not self.EMPTY:
                 self.add(key)
