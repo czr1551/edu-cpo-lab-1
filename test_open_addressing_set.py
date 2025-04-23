@@ -129,15 +129,22 @@ def test_identity_property(lst: list[int]):
     assert sorted(empty_set.to_list()) == sorted(a2.to_list())
 
 
+@given(
+    st.lists(st.integers()),
+    st.lists(st.integers()),
+    st.lists(st.integers())
+)
 def test_associativity_property(
-        lst_a: list[int],
-        lst_b: list[int],
-        lst_c: list[int]):
+    lst_a: list[int],
+    lst_b: list[int],
+    lst_c: list[int]
+):
     # (a.concat(b)).concat(c)
     a1 = create_set(lst_a)
     b1 = create_set(lst_b)
     c1 = create_set(lst_c)
     a1.concat(b1).concat(c1)
+    left = sorted(a1.to_list())
 
     # a.concat(b.concat(c))
     a2 = create_set(lst_a)
@@ -145,8 +152,9 @@ def test_associativity_property(
     c2 = create_set(lst_c)
     b2.concat(c2)
     a2.concat(b2)
+    right = sorted(a2.to_list())
 
-    assert a1 == a2
+    assert left == right
 
 # -----------------------
 # Handling `None` Values
