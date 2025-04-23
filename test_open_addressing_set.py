@@ -1,4 +1,3 @@
-# test_open_addressing_set.py
 from typing import List
 from hypothesis import given, strategies as st
 from open_addressing_set import OpenAddressingSet
@@ -206,13 +205,13 @@ def test_resize() -> None:
     assert sorted(s.to_list()) == expected_after_remove
 
     # Test 4: Special case with initial capacity of 1
-    s: OpenAddressingSet[int] = OpenAddressingSet(
+    s_small: OpenAddressingSet[int] = OpenAddressingSet(
         initial_capacity=1, growth_factor=2)
-    s.add(0)
-    assert s.capacity == 2
-    s.add(1)
-    assert s.capacity == 4
-    assert sorted(s.to_list()) == [0, 1]
+    s_small.add(0)
+    assert s_small.capacity == 2
+    s_small.add(1)
+    assert s_small.capacity == 4
+    assert sorted(s_small.to_list()) == [0, 1]
 
 # -----------------------
 # Randomized Testing (Hypothesis)
