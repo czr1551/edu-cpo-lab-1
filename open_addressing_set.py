@@ -1,174 +1,131 @@
-from typing import Any, Callable, List, Iterator
+# open_addressing_set.py
+from typing import TypeVar, Generic, Callable, Iterator, List
+
+T = TypeVar('T')
+U = TypeVar('U')
+R = TypeVar('R')
 
 
-class OpenAddressingSet:
+class OpenAddressingSet(Generic[T]):
     """
     A hash set implementation using open addressing with
     linear probing for collision resolution.
     """
 
-    EMPTY = object()
-    # Special marker to distinguish between `None` and empty slots
+    _EMPTY = object()
 
-    def __init__(self: 'OpenAddressingSet', initial_capacity: int = 8,
+    def __init__(self, initial_capacity: int = 8,
                  growth_factor: int = 2) -> None:
-        """
-        Initialize the hash set.
+        self.capacity: int = initial_capacity
+        self.size: int = 0
+        self.growth_factor: int = growth_factor
+        # Buckets store either T or the _EMPTY marker
+        self.buckets: List[object] = [self._EMPTY] * self.capacity
 
-        :param initial_capacity:
-        Initial size of the hash table (must be a power of 2)
-        :param growth_factor:
-        Growth factor for table expansion when load factor is too high
-        """
-        self.capacity = initial_capacity
-        self.size = 0
-        self.growth_factor = growth_factor
-        self.buckets: List[object] = [self.EMPTY] * self.capacity
-
-    def _hash(self: 'OpenAddressingSet', key: object) -> int:
-        """Compute the hash value and map it to a table index."""
+    def _hash(self, key: T) -> int:
         return hash(key) % self.capacity
 
-    def _probe(self: 'OpenAddressingSet', key: object) -> int:
-        """
-        Linear probing: Find the index of the key in the hash table
-        or the first empty slot for insertion.
-        """
+    def _probe(self, key: T) -> int:
         index = self._hash(key)
-        while (self.buckets[index] is not self.EMPTY
+        while (self.buckets[index] is not self._EMPTY
                and self.buckets[index] != key):
             index = (index + 1) % self.capacity
         return index
 
-    def add(self: 'OpenAddressingSet', key: object) -> None:
-        """
-        Add an element to the set.
-
-        :param key: The element to add
-        """
+    def add(self, key: T) -> None:
         if (self.size + 1) / self.capacity > 0.7:
             self._resize()
-
         index = self._probe(key)
-        if self.buckets[index] is self.EMPTY:
+        if self.buckets[index] is self._EMPTY:
             self.buckets[index] = key
             self.size += 1
 
-    def filter(self: 'OpenAddressingSet',
-               predicate: Callable[[object], bool]) -> 'OpenAddressingSet':
-        """
-        Filter elements in the set, retaining those that satisfy the predicate.
-
-        :param predicate: The filtering function
-        :return: A new set with filtered elements
-        """
-        new_set = OpenAddressingSet(self.capacity, self.growth_factor)
-        for key in self.buckets:
-            if key is not self.EMPTY and predicate(key):
-                new_set.add(key)
+    def filter(self, predicate: Callable[[T], bool]) -> 'OpenAddressingSet[T]':
+        new_set: OpenAddressingSet[T] = OpenAddressingSet(
+            self.capacity, self.growth_factor)
+        for item in self:
+            if predicate(item):
+                new_set.add(item)
         return new_set
 
-    def map(self: 'OpenAddressingSet',
-            func: Callable[[object], object]) -> 'OpenAddressingSet':
-        """
-        Map elements in the set, returning a new set.
-
-        :param func: The mapping function
-        :return: A new set with mapped elements
-        """
-        new_set = OpenAddressingSet(self.capacity, self.growth_factor)
-        for key in self.buckets:
-            if key is not self.EMPTY:
-                new_set.add(func(key))
+    def map(self, func: Callable[[T], U]) -> 'OpenAddressingSet[U]':
+        new_set: OpenAddressingSet[U] = OpenAddressingSet(
+            self.capacity, self.growth_factor)
+        for item in self:
+            new_set.add(func(item))
         return new_set
 
-    def reduce(self: 'OpenAddressingSet', func: Callable[[Any, object], Any],
-               initial_state: Any) -> Any:
-        """
-        Reduce elements in the set to a single value.
-
-        :param func: The reduction function
-        :param initial_state: The initial state
-        :return: The result of reduction
-        """
-        state = initial_state
-        for key in self.buckets:
-            if key is not self.EMPTY:
-                state = func(state, key)
+    def reduce(self, func: Callable[[R, T], R], initial_state: R) -> R:
+        state: R = initial_state
+        for item in self:
+            state = func(state, item)
         return state
 
-    def remove(self: 'OpenAddressingSet', key: object) -> None:
-        """
-        Remove an element from the set.
-
-        :param key: The element to remove
-        """
+    def remove(self, key: T) -> None:
         index = self._hash(key)
-        while self.buckets[index] is not self.EMPTY:
+        while self.buckets[index] is not self._EMPTY:
             if self.buckets[index] == key:
-                self.buckets[index] = self.EMPTY
+                self.buckets[index] = self._EMPTY
                 self.size -= 1
                 return
             index = (index + 1) % self.capacity
 
-    def member(self: 'OpenAddressingSet', key: object) -> bool:
-        """
-        Check if an element exists in the set.
-
-        :param key: The element to check
-        :return: Whether the element exists
-        """
+    def member(self, key: T) -> bool:
         index = self._hash(key)
-        while self.buckets[index] is not self.EMPTY:
+        while self.buckets[index] is not self._EMPTY:
             if self.buckets[index] == key:
                 return True
             index = (index + 1) % self.capacity
         return False
 
-    def _resize(self: 'OpenAddressingSet') -> None:
-        """
-        Expand the hash table according to the growth factor.
-        """
+    def _resize(self) -> None:
         old_buckets = self.buckets
         self.capacity *= self.growth_factor
-        self.buckets = [self.EMPTY] * self.capacity
+        self.buckets = [self._EMPTY] * self.capacity
         self.size = 0
+        for item in old_buckets:
+            if item is not self._EMPTY:
+                # type: ignore
+                self.add(item)  # type: ignore
 
-        for key in old_buckets:
-            if key is not self.EMPTY:
-                self.add(key)
+    def to_list(self) -> List[T]:
+        # type: ignore
+        return [item for item in self.buckets if item is not self._EMPTY]
 
-    def to_list(self: 'OpenAddressingSet') -> List[object]:
-        """Convert the set to a Python list."""
-        return [key for key in self.buckets if key is not self.EMPTY]
+    def from_list(self, lst: List[T]) -> None:
+        for item in lst:
+            self.add(item)
 
-    def from_list(self: 'OpenAddressingSet', lst: List[object]) -> None:
-        """Create a set from a list."""
-        for key in lst:
-            self.add(key)
-
-    def __iter__(self: 'OpenAddressingSet') -> Iterator[object]:
-        """Implement the iterator interface."""
-        self.iter_index = 0
+    def __iter__(self) -> Iterator[T]:
+        self._iter_index: int = 0
         return self
 
-    def __next__(self: 'OpenAddressingSet') -> object:
-        """Support the `next()` method."""
-        while self.iter_index < self.capacity:
-            key = self.buckets[self.iter_index]
-            self.iter_index += 1
-            if key is not self.EMPTY:
-                return key
+    def __next__(self) -> T:
+        while self._iter_index < self.capacity:
+            item = self.buckets[self._iter_index]
+            self._iter_index += 1
+            if item is not self._EMPTY:
+                return item  # type: ignore
         raise StopIteration
 
     @staticmethod
-    def empty() -> 'OpenAddressingSet':
-        """Return an empty set."""
+    def empty() -> 'OpenAddressingSet[T]':
         return OpenAddressingSet()
 
-    def concat(self: 'OpenAddressingSet',
-               other_set: 'OpenAddressingSet') -> 'OpenAddressingSet':
-        for key in other_set.buckets:
-            if key is not self.EMPTY:
-                self.add(key)
+    def concat(self, other: 'OpenAddressingSet[T]') -> 'OpenAddressingSet[T]':
+        for item in other:
+            self.add(item)
         return self
+
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, OpenAddressingSet):
+            return False
+        if self.size != other.size:
+            return False
+        for item in self:
+            if not other.member(item):
+                return False
+        return True
+
+    def __len__(self) -> int:
+        return self.size
