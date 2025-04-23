@@ -1,5 +1,5 @@
 # open_addressing_set.py
-from typing import TypeVar, Generic, Callable, Iterator, List
+from typing import TypeVar, Generic, Callable, Iterator, List, cast
 
 T = TypeVar('T')
 U = TypeVar('U')
@@ -85,12 +85,15 @@ class OpenAddressingSet(Generic[T]):
         self.size = 0
         for item in old_buckets:
             if item is not self._EMPTY:
-                # type: ignore
-                self.add(item)  # type: ignore
+                # type: ignore[arg-type]
+                self.add(item)
 
     def to_list(self) -> List[T]:
-        # type: ignore
-        return [item for item in self.buckets if item is not self._EMPTY]
+        # Cast from List[object] to List[T] since we only store T in non-_EMPTY
+        # slots
+        return cast(
+            List[T], [
+                item for item in self.buckets if item is not self._EMPTY])
 
     def from_list(self, lst: List[T]) -> None:
         for item in lst:
@@ -105,7 +108,7 @@ class OpenAddressingSet(Generic[T]):
             item = self.buckets[self._iter_index]
             self._iter_index += 1
             if item is not self._EMPTY:
-                return item  # type: ignore
+                return item  # type: ignore[return-value]
         raise StopIteration
 
     @staticmethod
