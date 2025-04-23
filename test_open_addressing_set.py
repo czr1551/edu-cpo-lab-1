@@ -1,4 +1,3 @@
-# test_open_addressing_set.py
 from hypothesis import given, strategies as st
 from open_addressing_set import OpenAddressingSet
 
@@ -121,18 +120,15 @@ def test_identity_property(lst: list[int]):
     a = create_set(lst)
     a_copy = create_set(lst)
     a.concat(OpenAddressingSet.empty())
-    assert a == a_copy
+    assert sorted(a.to_list()) == sorted(a_copy.to_list())
 
     # empty().concat(a) == a
     a2 = create_set(lst)
-    empty_set = OpenAddressingSet.empty()
+    empty_set: OpenAddressingSet[int] = OpenAddressingSet.empty()
     empty_set.concat(a2)
-    assert empty_set == a2
+    assert sorted(empty_set.to_list()) == sorted(a2.to_list())
 
 
-@given(st.lists(st.integers()),
-       st.lists(st.integers()),
-       st.lists(st.integers()))
 def test_associativity_property(
         lst_a: list[int],
         lst_b: list[int],

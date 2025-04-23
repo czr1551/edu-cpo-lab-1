@@ -1,4 +1,3 @@
-# open_addressing_set.py
 from typing import TypeVar, Generic, Callable, Iterator, List, cast
 
 T = TypeVar('T')
@@ -85,12 +84,11 @@ class OpenAddressingSet(Generic[T]):
         self.size = 0
         for item in old_buckets:
             if item is not self._EMPTY:
-                # type: ignore[arg-type]
-                self.add(item)
+                # Cast to T so mypy sees correct type for add()
+                self.add(cast(T, item))
 
     def to_list(self) -> List[T]:
-        # Cast from List[object] to List[T] since we only store T in non-_EMPTY
-        # slots
+        # Cast List[object] to List[T] since non-_EMPTY entries are T
         return cast(
             List[T], [
                 item for item in self.buckets if item is not self._EMPTY])
